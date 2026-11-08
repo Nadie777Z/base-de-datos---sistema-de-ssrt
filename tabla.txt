@@ -1,0 +1,46 @@
+=====================================================
+MODELO RELACIONAL (PASO A TABLAS) - S.S.R.T. #TUPIZA
+=====================================================
+
+1. cliente (id_clientes, nombre_completo, direccion_calle, direccion_numero, direccion_zona)
+   - PK: id_clientes
+
+2. cliente_telefono (id_clientes, telefono)
+   - PK: (id_clientes, telefono) 
+   - FK: id_clientes -> cliente 
+
+3. producto (cod_producto, nombre, precio, stock)
+   - PK: cod_producto
+
+4. equipo_seguridad (cod_producto, garantia)
+   - PK: cod_producto
+   - FK: cod_producto -> producto
+
+5. material_instalacion (cod_producto, unidad_medida)
+   - PK: cod_producto
+   - FK: cod_producto -> producto
+
+6. pedido (n_pedido, fecha, total, id_clientes)
+   - PK: n_pedido
+   - FK: id_clientes -> cliente
+
+7. detalle_pedido (n_pedido, cod_producto, cantidad, precio_unitario)
+   - PK: (n_pedido, cod_producto) 
+   - FK: n_pedido -> pedido
+   - FK: cod_producto -> producto
+
+8. instalacion (id_servicio, fecha, estado, id_clientes)
+   - PK: id_servicio
+   - FK: id_clientes -> cliente
+
+9. tecnico (id_tecnico, nombre_completo)
+   - PK: id_tecnico
+
+10. tecnico_telefono (id_tecnico, telefono)
+    - PK: (id_tecnico, telefono) 
+    - FK: id_tecnico -> tecnico 
+
+11. instalacion_tecnico (id_servicio, id_tecnico)
+    - PK: (id_servicio, id_tecnico) 
+    - FK: id_servicio -> instalacion
+    - FK: id_tecnico -> tecnico
