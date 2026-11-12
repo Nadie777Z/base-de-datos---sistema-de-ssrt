@@ -1,0 +1,44 @@
+JUSTIFICACIÓN DE CARDINALIDADES Y REGLAS DE NEGOCIO - S.S.R.T. TUPIZA (VERSIÓN 1.1)
+
+1. Relación: Cliente - Realiza - Pedido (1 : N)
+   - Cardinalidad y Participación: Un cliente realiza N pedidos (parcial); un pedido pertenece obligatoriamente a 1 solo 
+cliente (total, línea doble).
+   - Regla de Negocio: Cada comprobante de venta o pedido de equipos de seguridad debe emitirse obligatoriamente a nombre 
+de un único cliente específico para el control estricto de garantías y trazabilidad.
+
+2. Relación: Pedido - Tiene - Detalle de pedido (1 : N con Entidad Débil)
+   - Cardinalidad y Participación: Un pedido contiene N líneas de detalle (total, línea doble); cada línea de detalle 
+pertenece a 1 solo pedido (total, línea doble).
+   - Regla de Negocio: El detalle de pedido es una entidad débil con clave primaria compuesta ((n_pedido, cod_producto)). 
+Todo pedido registrado consta obligatoriamente de al menos un artículo adquirido.
+
+3. Relación: Producto - Incluye - Detalle de pedido (1 : N)
+   - Cardinalidad y Participación: Un producto puede estar presente en N detalles de venta (parcial); cada renglón de 
+detalle hace referencia a 1 solo producto (total, línea doble).
+   - Regla de Negocio: Los artículos del catálogo de seguridad se comercializan mediante líneas de pedido específicas que 
+exigen un producto válido del inventario.
+
+4. Relación: Cliente - Solicita - Instalación (1 : N)
+   - Cardinalidad y Participación: Un cliente solicita N instalaciones (parcial); una orden de instalación es solicitada 
+por 1 solo cliente (total, línea doble).
+   - Regla de Negocio: El negocio permite que un cliente contrate servicios de montaje técnico de forma independiente o 
+posterior a la compra, pero toda orden de servicio técnica requiere un cliente emisor obligatorio.
+
+5. Relación: Instalación - Asigna - Técnico (N : M)
+   - Cardinalidad y Participación: Una orden de instalación requiere M técnicos (total, línea doble); un técnico ejecuta N 
+instalaciones (parcial).
+   - Regla de Negocio: Para montajes complejos en campo, se requiere un equipo de varios técnicos asignados 
+obligatoriamente a la orden de trabajo mediante una tabla intermedia.
+
+6. Jerarquía EER de Producto (Superclase y Subclases - Estrategia Opción A)
+   - Restricciones: Total (línea doble) y Disjunta ('d').
+   - Regla de Negocio: Todo artículo del inventario general (superclase `Producto`) pertenece exclusivamente a 
+`Equipo de seguridad` (que almacena garantía, tecnología/conectividad y resolución/canales de DVR) o a `Material de 
+instalación` (que almacena unidad de medida, calibre/grosor, longitud y material de fabricación). Debido a que cada 
+subclase posee múltiples atributos técnicos diferenciados, se aplica la Opción A (una tabla por clase) para evitar 
+valores nulos en la base de datos.
+
+7. Tratamiento de Atributos Multivaluados (Regla de Normalización)
+   - Regla de Negocio: Como un cliente y un técnico pueden poseer múltiples números de teléfono, dichos atributos 
+multivaluados se separan en tablas independientes (`cliente_telefono` y `tecnico_telefono`) con clave primaria compuesta 
+para garantizar la atomicidad (1NF).
