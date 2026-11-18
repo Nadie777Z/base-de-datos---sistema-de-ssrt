@@ -1,0 +1,23 @@
+MODELO RELACIONAL (PASO A TABLAS) - v1.2
+
+1. cliente (id_clientes PK, ci_nit UNIQUE, nombre_completo, direccion_calle, direccion_numero, direccion_zona)
+
+2. cliente_telefono (id_clientes PK / FK -> cliente, telefono PK)
+
+3. producto (cod_producto PK, nombre, precio, stock)
+
+4. equipo_seguridad (cod_producto PK / FK -> producto, garantia, tecnologia, resolucion_canales)
+
+5. material_instalacion (cod_producto PK / FK -> producto, unidad_medida, calibre, longitud, material_fabricacion)
+
+6. pedido (n_pedido PK, fecha, id_clientes FK -> cliente)
+
+7. detalle_pedido (n_pedido PK / FK -> pedido, cod_producto PK / FK -> producto, cantidad, precio_unitario)
+
+8. instalacion (id_servicio PK, fecha, estado, id_clientes FK -> cliente)
+
+9. tecnico (id_tecnico PK, ci UNIQUE, nombre_completo)
+
+10. tecnico_telefono (id_tecnico PK / FK -> tecnico, telefono PK)
+
+11. instalacion_tecnico (id_servicio PK / FK -> instalacion, id_tecnico PK / FK -> tecnico)

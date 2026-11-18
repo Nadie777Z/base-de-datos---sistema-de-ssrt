@@ -1,0 +1,26 @@
+REGISTRO DE CAMBIOS Y AUDITORÍA DE NORMALIZACIÓN (3FN) v1.2
+
+Durante la revisiòn de normalización (1FN, 2FN y 3FN) aplicada al proyecto, se realizaron tres mejoras estructurales para 
+eliminar anomalías y garantizar la integridad referencial:
+
+1. Eliminación de Redundancia por Atributo Derivado (Tabla `pedido`):
+   - Cambio: Se eliminó la columna física `total` de la tabla `pedido` (en el diagrama E-R pasa a representarse como 
+atributo derivado con óvalo punteado).
+   - Justificación: El total se calcula sumando `(cantidad * precio_unitario)` desde `detalle_pedido`. Almacenarlo 
+físicamente generaba riesgo de Anomalía de Actualización.
+
+2. Incorporación de Claves Alternativas Únicas (`cliente` y `tecnico`):
+   - Cambio: Se añadieron los atributos `ci_nit` en `cliente` y `ci` en `tecnico` con restricción `NOT NULL UNIQUE`, 
+manteniendo `id_clientes` e `id_tecnico` como claves primarias sustitutas.
+   - Justificación: Evita la duplicidad de personas o empresas reales bajo distintos identificadores internos, cumpliendo 
+las reglas de identificación fiscal y laboral sin perder el rendimiento de los JOIN con claves numéricas simples.
+
+3. Depuración Conceptual de Entidad Débil (`Detalle de pedido`):
+   - Cambio: Se retiró el óvalo `Cod_Producto` del diagrama E-R dentro de `Detalle de pedido`, conservando únicamente 
+`Cantidad` y `Precio_unitario`.
+   - Justificación: En las reglas de notacion chen , las claves foráneas no se dibujan como atributos propios de la entidad débil, 
+ya que se heredan automáticamente de las relaciones identificadoras con `Pedido` y `Producto`. Asimismo, se ratificó 
+mantener `precio_unitario` en la tabla intermedia por depender funcionalmente de toda la clave compuesta `(n_pedido, 
+cod_producto)` para registrar el precio histórico de venta.
+
+4. En el diagrama se colocaron lineas normales en vez de lineas con flecha.
