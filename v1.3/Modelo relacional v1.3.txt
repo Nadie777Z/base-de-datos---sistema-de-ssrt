@@ -1,0 +1,23 @@
+MODELO RELACIONAL  v1.3
+
+1. customers (customer_id PK, ci_nit UNIQUE, full_name, street, house_number, zone)
+
+2. customer_phones (customer_id PK / FK -> customers, phone PK)
+
+3. products (product_code PK, name, price, stock)
+
+4. security_equipment (product_code PK / FK -> products, warranty_months, technology, resolution, channels)
+
+5. installation_materials (product_code PK / FK -> products, unit_of_measure, gauge, length, manufacturing_material)
+
+6. orders (order_number PK, order_date, customer_id FK -> customers)
+
+7. order_details (order_number PK / FK -> orders, product_code PK / FK -> products, quantity, unit_price)
+
+8. installations (service_id PK, service_date, status, customer_id FK -> customers)
+
+9. technicians (technician_id PK, ci UNIQUE, full_name)
+
+10. technician_phones (technician_id PK / FK -> technicians, phone PK)
+
+11. installation_technicians (service_id PK / FK -> installations, technician_id PK / FK -> technicians)

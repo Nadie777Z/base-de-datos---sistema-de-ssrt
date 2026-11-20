@@ -1,0 +1,20 @@
+IMPLEMENTACIÓN FÍSICA EN POSTGRESQL
+
+1. Descomposición Atómica de `resolution_channels` en `security_equipment` (1FN):
+   - Cambio: Se dividió el atributo compuesto `resolution_channels` en dos columnas independientes: 
+`resolution VARCHAR(30)` (permite NULL para equipos sin video como alarmas) y `channels INT DEFAULT 1 
+CHECK (channels > 0)` (valor por defecto 1 para cámaras estándar, editable a 2, 4, 8 o 16 para cámaras multisensor y 
+grabadores DVR/NVR, o NULL si no aplica).
+   - Motivo: Garantizar la Primera Forma Normal (atomicidad) para permitir consultas y filtros independientes por 
+resolución o cantidad de canales en SQL.
+
+2. Refinamiento de Garantía a Meses (`warranty_months`):
+   - Cambio: Se actualizó el atributo `garantia` a `warranty_months INT NOT NULL CHECK (warranty_months >= 0)` 
+en el diagrama EER, modelo relacional y script DDL.
+   - Motivo: Almacenar el tiempo de garantía como entero numérico en meses evita ambigüedades de texto libre y permite 
+calcular fechas exactas de vencimiento en PostgreSQL.
+
+3. Estandarización del Esquema Físico en Inglés y Aplicación de 8 Decisiones DDL:
+   - Cambio: Se implementó el script completo (`script_ssrt_v1.3.sql`) con identificadores técnicos en inglés 
+(tablas y columnas) y datos orientados al usuario en español, aplicando tipos exactos (`NUMERIC(10,2)` para moneda), 
+restricciones de dominio (`CHECK`), valores por omisión (`DEFAULT`) y políticas referenciales (`ON DELETE CASCADE` / `RESTRICT`).
